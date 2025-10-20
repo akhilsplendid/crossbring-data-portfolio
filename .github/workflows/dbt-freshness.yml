@@ -7,6 +7,7 @@ on:
 
 jobs:
   freshness:
+    if: ${{ secrets.SNOWFLAKE_ACCOUNT != '' && secrets.SNOWFLAKE_USER != '' && secrets.SNOWFLAKE_PASSWORD != '' && secrets.SNOWFLAKE_ROLE != '' && secrets.SNOWFLAKE_WAREHOUSE != '' && secrets.SNOWFLAKE_DATABASE != '' && secrets.SNOWFLAKE_SCHEMA != '' }}
     runs-on: ubuntu-latest
     defaults:
       run:

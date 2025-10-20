@@ -11,6 +11,8 @@ jobs:
     defaults:
       run:
         working-directory: 01-warehouse-dbt
+    env:
+      HAS_SNOWFLAKE: ${{ secrets.SNOWFLAKE_ACCOUNT != '' && secrets.SNOWFLAKE_USER != '' && secrets.SNOWFLAKE_PASSWORD != '' && secrets.SNOWFLAKE_ROLE != '' && secrets.SNOWFLAKE_WAREHOUSE != '' && secrets.SNOWFLAKE_DATABASE != '' && secrets.SNOWFLAKE_SCHEMA != '' }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -21,6 +23,7 @@ jobs:
           python -m pip install --upgrade pip
           pip install dbt-core dbt-snowflake
       - name: Configure dbt profile
+        if: ${{ env.HAS_SNOWFLAKE == 'true' }}
         run: |
           mkdir -p ~/.dbt
           cat > ~/.dbt/profiles.yml <<'YAML'
@@ -40,11 +43,28 @@ jobs:
                 client_session_keep_alive: false
           YAML
       - run: dbt deps
-      - run: dbt seed --full-refresh
-      - run: dbt run
-      - run: dbt test
-      - run: dbt docs generate
+      - name: dbt seed
+        if: ${{ env.HAS_SNOWFLAKE == 'true' }}
+        run: dbt seed --full-refresh
+      - name: dbt run
+        if: ${{ env.HAS_SNOWFLAKE == 'true' }}
+        run: dbt run
+      - name: dbt test
+        if: ${{ env.HAS_SNOWFLAKE == 'true' }}
+        run: dbt test
+      - name: dbt docs generate
+        if: ${{ env.HAS_SNOWFLAKE == 'true' }}
+        run: dbt docs generate
+      - name: dbt parse (no Snowflake secrets)
+        if: ${{ env.HAS_SNOWFLAKE != 'true' }}
+        run: dbt parse
       - uses: actions/upload-artifact@v4
+        if: ${{ env.HAS_SNOWFLAKE == 'true' }}
         with:
           name: dbt-target
           path: 01-warehouse-dbt/target
+      - uses: actions/upload-artifact@v4
+        if: ${{ env.HAS_SNOWFLAKE != 'true' }}
+        with:
+          name: dbt-manifest
+          path: 01-warehouse-dbt/target/manifest.json
