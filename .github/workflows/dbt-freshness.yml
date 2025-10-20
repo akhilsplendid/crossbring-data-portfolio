@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: crossbring-data-portfolio/01-warehouse-dbt
+        working-directory: 01-warehouse-dbt
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -45,7 +45,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: dbt-sources
-          path: crossbring-data-portfolio/01-warehouse-dbt/target/sources.json
+          path: 01-warehouse-dbt/target/sources.json
       - name: Fail on freshness errors
         run: |
           python - << 'PY'
@@ -59,4 +59,3 @@ jobs:
               sys.exit(1)
           print('Freshness OK')
           PY
-

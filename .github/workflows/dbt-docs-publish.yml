@@ -5,7 +5,7 @@ on:
   push:
     branches: [ main, master ]
     paths:
-      - 'crossbring-data-portfolio/01-warehouse-dbt/**'
+      - '01-warehouse-dbt/**'
 
 jobs:
   publish-docs:
@@ -14,7 +14,7 @@ jobs:
       contents: write
     defaults:
       run:
-        working-directory: crossbring-data-portfolio/01-warehouse-dbt
+        working-directory: 01-warehouse-dbt
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -52,6 +52,5 @@ jobs:
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: crossbring-data-portfolio/01-warehouse-dbt/target
+          publish_dir: 01-warehouse-dbt/target
           destination_dir: dbt-docs
-

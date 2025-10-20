@@ -1,0 +1,43 @@
+name: Crossbring API Container
+
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - '03-api-java/**'
+      - 'render.yaml'
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    defaults:
+      run:
+        working-directory: 03-api-java
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up JDK
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+      - name: Build JAR
+        run: |
+          ./mvnw -q -DskipTests package
+      - name: Log in to GHCR
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Build and push image
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: 03-api-java/Dockerfile
+          push: true
+          tags: |
+            ghcr.io/${{ github.repository_owner }}/crossbring-api:latest
+            ghcr.io/${{ github.repository_owner }}/crossbring-api:${{ github.sha }}

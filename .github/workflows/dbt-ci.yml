@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: crossbring-data-portfolio/01-warehouse-dbt
+        working-directory: 01-warehouse-dbt
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -47,5 +47,4 @@ jobs:
       - uses: actions/upload-artifact@v4
         with:
           name: dbt-target
-          path: crossbring-data-portfolio/01-warehouse-dbt/target
-
+          path: 01-warehouse-dbt/target
