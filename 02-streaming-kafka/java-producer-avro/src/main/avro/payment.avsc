@@ -1,0 +1,14 @@
+{
+  "type": "record",
+  "name": "Payment",
+  "namespace": "com.crossbring.avro",
+  "fields": [
+    {"name": "payment_id", "type": "long"},
+    {"name": "account_id", "type": "long"},
+    {"name": "amount", "type": "double"},
+    {"name": "status", "type": {"type":"enum","name":"PaymentStatus","symbols":["SETTLED","PENDING","FAILED"]}},
+    {"name": "method", "type": {"type":"enum","name":"PaymentMethod","symbols":["CARD","TRANSFER"]}},
+    {"name": "ts", "type": "string"}
+  ]
+}
+

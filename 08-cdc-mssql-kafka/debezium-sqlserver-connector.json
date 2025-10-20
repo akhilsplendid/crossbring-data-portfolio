@@ -1,0 +1,25 @@
+{
+  "name": "sqlserver-cdc-orders",
+  "config": {
+    "connector.class": "io.debezium.connector.sqlserver.SqlServerConnector",
+    "database.hostname": "<MSSQL_HOST>",
+    "database.port": "1433",
+    "database.user": "<USER>",
+    "database.password": "<PASSWORD>",
+    "database.names": "YourDb",
+    "database.encrypt": "false",
+    "table.include.list": "dbo.orders",
+    "database.history.kafka.bootstrap.servers": "localhost:9092",
+    "database.history.kafka.topic": "schema-changes.sqlserver",
+
+    "topic.prefix": "sqlserver",
+    "include.schema.changes": "false",
+    "snapshot.mode": "initial",
+
+    "tombstones.on.delete": "false",
+    "transforms": "unwrap",
+    "transforms.unwrap.type": "io.debezium.transforms.ExtractNewRecordState",
+    "transforms.unwrap.add.fields": "op,ts_ms"
+  }
+}
+

@@ -1,0 +1,53 @@
+version: 2
+
+models:
+  - name: stg_customers
+    columns:
+      - name: customer_id
+        tests: [not_null, unique]
+      - name: country
+        tests:
+          - accepted_values:
+              values: ['DK','SE','FI']
+
+  - name: stg_accounts
+    columns:
+      - name: account_id
+        tests: [not_null, unique]
+      - name: customer_id
+        tests: [not_null]
+
+  - name: stg_payments
+    columns:
+      - name: payment_id
+        tests: [not_null, unique]
+      - name: status
+        tests:
+          - accepted_values:
+              values: ['SETTLED','PENDING','FAILED']
+
+  - name: stg_payments_streamed
+    description: Normalized payments from raw variant JSON via Kafka Connect or Snowpipe
+    columns:
+      - name: payment_id
+        tests: [not_null]
+      - name: status
+        tests:
+          - accepted_values:
+              values: ['SETTLED','PENDING','FAILED']
+      - name: event_age_sec
+        description: Seconds between event ts and processing time
+        tests:
+          - not_null
+  - name: stg_orders
+    columns:
+      - name: order_id
+        tests: [not_null, unique]
+      - name: status
+        tests:
+          - accepted_values:
+              values: ['PLACED','SHIPPED','CANCELLED']
+      - name: channel
+        tests:
+          - accepted_values:
+              values: ['WEB','APP']

@@ -1,0 +1,16 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://crossbring/schemas/payment.schema.json",
+  "type": "object",
+  "required": ["paymentId", "accountId", "amount", "status", "method"],
+  "properties": {
+    "paymentId": {"type": "integer"},
+    "accountId": {"type": "integer"},
+    "amount": {"type": "number", "minimum": 0},
+    "status": {"type": "string", "enum": ["SETTLED", "PENDING", "FAILED"]},
+    "method": {"type": "string", "enum": ["CARD", "TRANSFER"]},
+    "ts": {"type": "string", "format": "date-time"}
+  },
+  "additionalProperties": false
+}
+

@@ -1,0 +1,19 @@
+#!/bin/sh
+# Apache Maven Wrapper startup script
+
+MVNW_ROOT_DIR=$(cd "$(dirname "$0")"; pwd -P)
+WRAPPER_JAR="$MVNW_ROOT_DIR/.mvn/wrapper/maven-wrapper.jar"
+WRAPPER_PROPERTIES="$MVNW_ROOT_DIR/.mvn/wrapper/maven-wrapper.properties"
+
+JAVA_EXE="java"
+if [ -n "$JAVA_HOME" ]; then
+  if [ -x "$JAVA_HOME/jre/sh/java" ]; then
+    JAVA_EXE="$JAVA_HOME/jre/sh/java"
+  else
+    JAVA_EXE="$JAVA_HOME/bin/java"
+  fi
+fi
+
+exec "$JAVA_EXE" -Dmaven.multiModuleProjectDirectory="$MVNW_ROOT_DIR" \
+  -cp "$WRAPPER_JAR" org.apache.maven.wrapper.MavenWrapperMain "$@"
+

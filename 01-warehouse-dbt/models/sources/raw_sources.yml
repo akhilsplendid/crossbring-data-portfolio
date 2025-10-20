@@ -1,0 +1,36 @@
+version: 2
+
+sources:
+  - name: raw
+    schema: raw
+    tables:
+      - name: PAYMENTS_RAW
+        description: Raw payments ingested via Kafka Connect or Snowpipe (JSON)
+        loaded_at_field: ingest_ts
+        freshness:
+          warn_after: {count: 15, period: minute}
+          error_after: {count: 60, period: minute}
+        columns:
+          - name: RECORD_CONTENT
+            description: JSON payload (Kafka Connect Snowflake sink)
+          - name: $1
+            description: JSON variant column when using Snowpipe COPY from staged files
+      - name: ORDERS_RAW
+        description: Raw orders ingested via Kafka Connect or Snowpipe (JSON)
+        loaded_at_field: ingest_ts
+        freshness:
+          warn_after: {count: 15, period: minute}
+          error_after: {count: 60, period: minute}
+        columns:
+          - name: RECORD_CONTENT
+            description: JSON payload (Kafka Connect Snowflake sink)
+          - name: $1
+            description: JSON variant column when using Snowpipe COPY from staged files
+      - name: ORDERS_CDC
+        description: Debezium SQL Server CDC for orders (JSON)
+        loaded_at_field: ingest_ts
+        columns:
+          - name: RECORD_CONTENT
+            description: JSON payload from Kafka Connect Snowflake sink
+          - name: $1
+            description: JSON variant when staged and copied by Snowpipe

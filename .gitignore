@@ -1,0 +1,27 @@
+# OS/editor
+.DS_Store
+.idea/
+.vscode/
+Thumbs.db
+
+# Python
+.venv/
+__pycache__/
+*.pyc
+
+# Java/Maven
+target/
+*.log
+
+# dbt artifacts
+01-warehouse-dbt/target/
+01-warehouse-dbt/dbt_packages/
+
+# Terraform
+.terraform/
+.terraform.lock.hcl
+terraform.tfstate*
+
+# Misc
+consumer.log
+

@@ -1,0 +1,34 @@
+version: 2
+
+models:
+  - name: dim_customer
+    columns:
+      - name: customer_id
+        tests: [not_null, unique]
+
+  - name: dim_account
+    columns:
+      - name: account_id
+        tests: [not_null, unique]
+      - name: currency
+        tests:
+          - accepted_values:
+              values: ['DKK','SEK','EUR']
+
+  - name: fct_payments
+    columns:
+      - name: payment_id
+        tests: [not_null, unique]
+      - name: status
+        tests:
+          - accepted_values:
+              values: ['SETTLED','PENDING','FAILED']
+
+  - name: fct_orders
+    columns:
+      - name: order_id
+        tests: [not_null, unique]
+      - name: status
+        tests:
+          - accepted_values:
+              values: ['PLACED','SHIPPED','CANCELLED']

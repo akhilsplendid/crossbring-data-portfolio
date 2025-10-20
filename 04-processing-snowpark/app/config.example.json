@@ -1,0 +1,10 @@
+{
+  "account": "<account>.<region>",
+  "user": "<user>",
+  "password": "<password>",
+  "role": "<role>",
+  "warehouse": "<warehouse>",
+  "database": "<database>",
+  "schema": "PUBLIC"
+}
+
